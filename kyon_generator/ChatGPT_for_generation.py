@@ -37,7 +37,8 @@ from langchain.schema import (
 import sys
 
 sys.path.append("..")
-from src_reform import utils
+sys.path.append('/content/Chat-Haruhi-Suzumiya/ChatHaruhi2.0/ChatHaruhi')
+import utils
 import re
 
 
