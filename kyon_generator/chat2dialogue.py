@@ -89,7 +89,7 @@ def merge_dialogue(user_message, dialogue_text):
 
 def main(input_chat, output_dialogue, role_name, other_names, temp_save_folder):
     config = configparser.ConfigParser()
-    config.read("../src_reform/config.ini", encoding='utf-8')
+    config.read("config.ini", encoding='utf-8')
     if role_name not in config.sections():
         print(f"{role_name} 角色未创建，请创建角色后再使用，或是与config.ini 中角色一致")
     else:
@@ -122,7 +122,7 @@ def main(input_chat, output_dialogue, role_name, other_names, temp_save_folder):
             role = chat['role']
             text = chat['text']
 
-            file_name = f"{i}_{text[:min(4,len(text))]}.jsonl" # 生成文件名
+            file_name = f"{i}_{text[:min(4, len(text))]}.jsonl"  # 生成文件名
             # replace invalid characters
             file_name = file_name.replace("/", "_")
 
@@ -130,11 +130,10 @@ def main(input_chat, output_dialogue, role_name, other_names, temp_save_folder):
             if os.path.exists(os.path.join(temp_save_folder, file_name)):
                 continue
 
-
             user_message = f'{role}:「{text}」'
 
             response = chatgpt.get_response(user_message, [])
-            temp_dialogue = [merge_dialogue(user_message, response)] 
+            temp_dialogue = [merge_dialogue(user_message, response)]
             save_dialogue(os.path.join(temp_save_folder, file_name), temp_dialogue)
 
             # dialogue.append(merge_dialogue(user_message, response))
@@ -146,9 +145,9 @@ def main(input_chat, output_dialogue, role_name, other_names, temp_save_folder):
 
         # 合并临时文件
         output_dialogue = f'{input_chat[:-4]}_to_dialogue.jsonl' if output_dialogue is None else output_dialogue
-        with open(output_dialogue, 'w',encoding= 'utf-8') as outfile:
+        with open(output_dialogue, 'w', encoding='utf-8') as outfile:
             for filename in os.listdir(temp_save_folder):
-                if filename.endswith('.jsonl'): 
+                if filename.endswith('.jsonl'):
                     filepath = os.path.join(temp_save_folder, filename)
 
                     # Cheng: 为了防止文件打不开，这里尝试打开三次
@@ -161,7 +160,7 @@ def main(input_chat, output_dialogue, role_name, other_names, temp_save_folder):
                         except:
                             if i == 2:
                                 print(f"Warning: Failed to open file {filename} after 3 attempts, skipping...")
-                    
+
                     # with open(filepath) as infile:
                     #     for line in infile:
                     #         outfile.write(line)
