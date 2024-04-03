@@ -5,7 +5,8 @@ import random
 import sys
 
 sys.path.append('..')
-from src_reform import utils, checkCharacter
+sys.path.append('/content/Chat-Haruhi-Suzumiya/ChatHaruhi2.0/ChatHaruhi')
+import utils
 import os
 import openai
 
@@ -45,7 +46,7 @@ def generate_character(cn_role_name, en_role_name, prompt=None):
     # 在config.ini中加添角色信息
     config = configparser.ConfigParser()
     # 读取配置文件
-    config.read('../src_reform/config.ini', encoding='utf-8')
+    config.read('config.ini', encoding='utf-8')
     configuration = {}
     if cn_role_name in config.sections():
         print(f"已存在{cn_role_name}角色的配置文件")
@@ -69,7 +70,7 @@ def generate_character(cn_role_name, en_role_name, prompt=None):
         config[cn_role_name]['local_model'] = "THUDM/chatglm2-6b"
         config[cn_role_name]['local_lora'] = "Jyshen/Chat_Suzumiya_GLM2LoRA"
         # 保存修改后的配置文件
-        with open('../src_reform/config.ini', 'w+', encoding='utf-8') as config_file:
+        with open('config.ini', 'w+', encoding='utf-8') as config_file:
             config.write(config_file)
         config.read('config.ini', encoding='utf-8')
     # 检查角色文件夹
@@ -77,7 +78,7 @@ def generate_character(cn_role_name, en_role_name, prompt=None):
     print(f"正在加载: {cn_role_name} 角色")
     for key, value in items:
         configuration[key] = value
-    checkCharacter.checkCharacter(configuration)
+    #checkCharacter.checkCharacter(configuration)
     if prompt is not None:
         fr = open(prompt, 'r')
         with open(os.path.join(f"../characters/{en_role_name}", 'system_prompt.txt'), 'w+', encoding='utf-8') as f:
